@@ -16,32 +16,32 @@ $chat_id = $telegram->ChatID();
 $text = $telegram->Text();
     $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $text]);
 
-//if ($text == "/start") {
-//    $firstname = no_apostrof($telegram->FirstName());
-//    $lastname = no_apostrof($telegram->LastName());
-//    $username = $telegram->Username();
-//    $sql = "select * from users where chat_id='$chat_id'";
-//    $result = mysqli_query($conn, $sql);
-//    if ($result->num_rows == 0) {
-//
-//        $sql = "insert into users (chat_id,firstname,lastname,username) values ('$chat_id','$firstname','$lastname','$username')";
-//        $result = mysqli_query($conn, $sql);
-//    }
-//
-//    chooseLanguage();
-//} else {
-//    switch (getPage($chat_id)){
-//        case 'start':
-//            if($text == "🇺🇿 O'zbek tili"){
-//                setLang($chat_id,'uz');
-//            }elseif ($text == "🇷🇺 Русский язык"){
-//                setLang($chat_id,'ru');
-//            }else{
-//                chooseButtons();
-//            }
-//            break;
-//    }
-//}
+if ($text == "/start") {
+    $firstname = no_apostrof($telegram->FirstName());
+    $lastname = no_apostrof($telegram->LastName());
+    $username = $telegram->Username();
+    $sql = "select * from users where chat_id='$chat_id'";
+    $result = mysqli_query($conn, $sql);
+    if ($result->num_rows == 0) {
+
+        $sql = "insert into users (chat_id,firstname,lastname,username,page) values ('$chat_id','$firstname','$lastname','$username','')";
+        $result = mysqli_query($conn, $sql);
+    }
+
+    chooseLanguage();
+} else {
+    switch (getPage($chat_id)){
+        case 'start':
+            if($text == "🇺🇿 O'zbek tili"){
+                setLang($chat_id,'uz');
+            }elseif ($text == "🇷🇺 Русский язык"){
+                setLang($chat_id,'ru');
+            }else{
+                chooseButtons();
+            }
+            break;
+    }
+}
 
 function chooseLanguage()
 {
@@ -53,7 +53,6 @@ function chooseLanguage()
     ];
     $keyboard = $telegram->buildKeyBoard($options, true, true);
     $content = [
-
         'chat_id' => $chat_id,
         'reply_markup' => $keyboard,
         'text' => "Iltimos tilni tanlang: \nВыберите язык:"
