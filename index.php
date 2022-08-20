@@ -1,6 +1,8 @@
 <?php
 require_once 'connect.php';
 include 'Telegram.php';
+
+
 function no_apostrof(string $satr): string
 {
     for ($i = 0; $i < strlen($satr); $i++) {
@@ -98,5 +100,9 @@ function getPage($chat_id)
     $sql = "select page from users where chat_id='$chat_id'";
     $result = mysqli_query($conn, $sql);
     $result = $result->fetch_assoc();
-    return $result['page'];
+    $s=$result['page'];
+    if (is_null($s)){
+        $s="";
+    };
+    return $s;
 }
