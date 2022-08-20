@@ -16,7 +16,6 @@ function no_apostrof(string $satr): string
 $telegram = new Telegram('5601653365:AAGjIarcmGayfd54MBSvVf1Qznc2BoQlWPY');
 $chat_id = $telegram->ChatID();
 $text = $telegram->Text();
-    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $text]);
 
 if ($text == "/start") {
     $firstname = no_apostrof($telegram->FirstName());
