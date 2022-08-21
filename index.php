@@ -1,4 +1,5 @@
 <?php
+
 require_once 'connect.php';
 include 'Telegram.php';
 
@@ -16,6 +17,10 @@ function no_apostrof(string $satr): string
 $telegram = new Telegram('5601653365:AAGjIarcmGayfd54MBSvVf1Qznc2BoQlWPY');
 $chat_id = $telegram->ChatID();
 $text = $telegram->Text();
+
+$e_message="";
+try
+{
 
 if ($text == "/start") {
     $firstname = no_apostrof($telegram->FirstName());
@@ -104,4 +109,18 @@ function getPage($chat_id)
         $s="";
     };
     return $s;
+}
+
+}
+catch (\Exception $e)
+{
+    $e_message.=$e->getMessage();
+    $telegram->sendMessage(['chat_id'=>$chat_id,'text'=>$e_message]);
+
+}
+catch (Throwable $e)
+{
+    $e_message.=$e->getMessage();
+    $telegram->sendMessage(['chat_id'=>$chat_id,'text'=>$e_message]);
+
 }
