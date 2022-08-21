@@ -4,7 +4,7 @@ require_once 'connect.php';
 include 'Telegram.php';
 
 
-function no_apostrof(string $satr): string
+function no_apostrof(string $satr=""): string
 {
     for ($i = 0; $i < strlen($satr); $i++) {
         if ($satr[$i] == "'") {
