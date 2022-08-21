@@ -18,8 +18,8 @@ $telegram = new Telegram('5601653365:AAGjIarcmGayfd54MBSvVf1Qznc2BoQlWPY');
 $chat_id = $telegram->ChatID();
 $text = $telegram->Text();
 
-$e_message = "";
-try {
+//$e_message = "";
+//try {
 
     if ($text == "/start") {
         $firstname = $telegram->FirstName();
@@ -117,12 +117,12 @@ try {
         return $s;
     }
 
-} catch (\Exception $e) {
-    $e_message .= $e->getMessage();
-    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $e_message]);
-
-} catch (Throwable $e) {
-    $e_message .= $e->getMessage();
-    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $e_message]);
-
-}
+//} catch (\Exception $e) {
+//    $e_message .= $e->getMessage();
+//    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $e_message]);
+//
+//} catch (Throwable $e) {
+//    $e_message .= $e->getMessage();
+//    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $e_message]);
+//
+//}
