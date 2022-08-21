@@ -44,8 +44,10 @@ $text = $telegram->Text();
             case 'start':
                 if ($text == "🇺🇿 O'zbek tili") {
                     setLang($chat_id, 'uz');
+                    showMainPage();
                 } elseif ($text == "🇷🇺 Русский язык") {
                     setLang($chat_id, 'ru');
+                    showMainPage();
                 } else {
                     chooseButtons();
                 }
