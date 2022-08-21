@@ -62,6 +62,7 @@ $text = $telegram->Text();
                            break;
                        case "🇺🇿♻️🇷🇺".getTexts('btn_til',$chat_id):
                            changeLang($chat_id);
+                           showMainPage();
                            break;
                    }
                 break;
