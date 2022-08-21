@@ -1,25 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
 <?php
 require_once 'connect.php';
-$chat_id=1701;
-function no_apostrof(string $satr):string{
-    for ($i=0;$i<strlen($satr);$i++){
-        if($satr[$i]=="'"){
-            $satr[$i]="`";
-        }
-    }
-    return $satr;
+$sql="select * from texts ";
+$result=mysqli_query($conn,$sql);
+while ($r=$r=$result->fetch_assoc()){
+    echo $r['ru']."<br>";
 }
-echo no_apostrof("Diyorbek");
-$firstname="diyorbek";
-$lastname="boltayev";
-$username="zzzzzv";
+?>
+</body>
+</html>
 
-$sql = "select * from users where chat_id='$chat_id'";
-$result = mysqli_query($conn, $sql);
-var_dump($result);
-if ($result->num_rows == 0) {
-
-    $sql = "insert into users (chat_id,firstname,lastname,username,page) values ('$chat_id','$firstname','$lastname','$username','')";
-    $result = mysqli_query($conn, $sql);
-    var_dump($result);
-}

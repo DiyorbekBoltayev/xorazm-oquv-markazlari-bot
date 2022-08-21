@@ -60,7 +60,7 @@ $text = $telegram->Text();
                        case "📜 ".getTexts('btn_markazlar_royhati',$chat_id):
                            //TODO xd
                            break;
-                       case "🇺🇿♻️🇷🇺":
+                       case "🇺🇿♻️🇷🇺".getTexts('btn_til',$chat_id):
                            changeLang($chat_id);
                            break;
                    }
@@ -95,7 +95,7 @@ $text = $telegram->Text();
                 $telegram->buildKeyboardButton("🏫 ".getTexts('btn_markaz_tanlash',$chat_id)),
                 $telegram->buildKeyboardButton("📜 ".getTexts('btn_markazlar_royhati',$chat_id))
             ],
-            [$telegram->buildKeyboardButton("🇺🇿♻️🇷🇺")]
+            [$telegram->buildKeyboardButton("🇺🇿♻️🇷🇺".getTexts('btn_til',$chat_id))]
         ];
         $keyboard=$telegram->buildKeyBoard($options,false,true);
         $content=[
