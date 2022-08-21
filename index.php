@@ -55,7 +55,7 @@ $text = $telegram->Text();
             case 'main':
                    switch ($text){
                        case "🏫 ".getTexts('btn_markaz_tanlash',$chat_id):
-                           //TODO
+                           showDistricts();
                            break;
                        case "📜 ".getTexts('btn_markazlar_royhati',$chat_id):
                            //TODO xd
@@ -98,6 +98,30 @@ $text = $telegram->Text();
             ],
             [$telegram->buildKeyboardButton("🇺🇿♻️🇷🇺".getTexts('btn_til',$chat_id))]
         ];
+        $keyboard=$telegram->buildKeyBoard($options,false,true);
+        $content=[
+            'chat_id'=>$chat_id,
+            'reply_markup'=>$keyboard,
+            'text'=>$text
+        ];
+        $telegram->sendMessage($content);
+    }
+
+    function showDistricts(){
+        global $telegram,$chat_id;
+        setPage($chat_id,'main');
+        $text=getTexts('tuman_tanlang',$chat_id);
+        $text.=" 👇";
+        $tumanlar=getDistricts($chat_id);
+        $options=[];
+        for($i=0;$i<count($tumanlar);$i+=2){
+            $options[]=[
+                $telegram->buildKeyboardButton("🔰 ".$tumanlar[$i]),
+                $telegram->buildKeyboardButton("🔰 ".$tumanlar[$i+1])];
+        }
+        if(count($tumanlar)%2==1){
+            $options[]=[$telegram->buildKeyboardButton("🔰 ".$tumanlar[count($tumanlar)-1])];
+        }
         $keyboard=$telegram->buildKeyBoard($options,false,true);
         $content=[
             'chat_id'=>$chat_id,

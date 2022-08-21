@@ -1,4 +1,6 @@
 <?php
+require_once "connect.php";
+require_once "index.php";
 
 function setLang($chat_id, $lang)
 {
@@ -42,4 +44,17 @@ function getPage($chat_id)
         $s = "";
     };
     return $s;
+}
+
+
+function getDistricts($chat_id){
+    global $conn;
+    $lang=getLang($chat_id);
+    $sql="select $lang from districts ";
+    $result=mysqli_query($conn,$sql);
+    $d=[];
+    while ($row=$result->fetch_assoc()){
+        $d[]=$row[$lang];
+    }
+    return $d;
 }
