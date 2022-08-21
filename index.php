@@ -1,6 +1,6 @@
 <?php
 
-require_once 'connect.php';
+require_once "texts.php";
 include 'Telegram.php';
 
 
@@ -34,7 +34,6 @@ $text = $telegram->Text();
         $sql = "select * from users where chat_id='$chat_id'";
         $result = mysqli_query($conn, $sql);
         if ($result->num_rows == 0) {
-
             $sql = "insert into users (chat_id,firstname,lastname,username,page) values ('$chat_id','$firstname','$lastname','$username','')";
             $result = mysqli_query($conn, $sql);
         }
@@ -50,6 +49,19 @@ $text = $telegram->Text();
                 } else {
                     chooseButtons();
                 }
+                break;
+            case 'main':
+                   switch ($text){
+                       case "🏫 ".getTexts('btn_markaz_tanlash',$chat_id):
+                           //TODO
+                           break;
+                       case "📜 ".getTexts('btn_markazlar_royhati',$chat_id):
+                           //TODO xd
+                           break;
+                       case "🇺🇿♻️🇷🇺":
+                           changeLang($chat_id);
+                           break;
+                   }
                 break;
         }
     }
@@ -71,50 +83,35 @@ $text = $telegram->Text();
         $telegram->sendMessage($content);
     }
 
+    function showMainPage(){
+        global $telegram,$chat_id;
+        setPage($chat_id,'main');
+        $text=getTexts('yonalish_tanlang',$chat_id);
+        $text.=" 👇";
+        $options=[
+            [
+                $telegram->buildKeyboardButton("🏫 ".getTexts('btn_markaz_tanlash',$chat_id)),
+                $telegram->buildKeyboardButton("📜 ".getTexts('btn_markazlar_royhati',$chat_id))
+            ],
+            [$telegram->buildKeyboardButton("🇺🇿♻️🇷🇺")]
+        ];
+        $keyboard=$telegram->buildKeyBoard($options,false,true);
+        $content=[
+            'chat_id'=>$chat_id,
+            'reply_markup'=>$keyboard,
+            'text'=>$text
+        ];
+        $telegram->sendMessage($content);
+    }
+
     function chooseButtons()
     {
         global $chat_id, $telegram;
         $content = [
             'chat_id' => $chat_id,
-            'text' => " Iltimos quyidagi tugmalardan birini tanlang 👇 \n Пожалуйста, выберите одну из кнопок ниже 👇"
+            'text' => " Iltimos quyidagi tugmalardan birini tanlang 👇 \nПожалуйста, выберите одну из кнопок ниже 👇"
         ];
         $telegram->sendMessage($content);
-    }
-
-    function setLang($chat_id, $lang)
-    {
-        global $conn;
-        $sql = "update users set language='$lang' where chat_id='$chat_id'";
-        mysqli_query($conn, $sql);
-    }
-
-    function getLang($chat_id)
-    {
-        global $conn;
-        $sql = "select language from users where chat_id='$chat_id'";
-        $result = mysqli_query($conn, $sql);
-        $result = $result->fetch_assoc();
-        return $result['language'];
-    }
-
-    function setPage($chat_id, $page)
-    {
-        global $conn;
-        $sql = "update users set page='$page' where chat_id='$chat_id'";
-        mysqli_query($conn, $sql);
-    }
-
-    function getPage($chat_id)
-    {
-        global $conn;
-        $sql = "select page from users where chat_id='$chat_id'";
-        $result = mysqli_query($conn, $sql);
-        $result = $result->fetch_assoc();
-        $s = $result['page'];
-        if (is_null($s)) {
-            $s = "";
-        };
-        return $s;
     }
 
 //} catch (\Exception $e) {
