@@ -115,9 +115,12 @@ $text = $telegram->Text();
         $tumanlar=getDistricts($chat_id);
         $options=[];
         for($i=0;$i<count($tumanlar);$i+=2){
-            $options[]=[
-                $telegram->buildKeyboardButton("🔰 ".$tumanlar[$i]),
-                $telegram->buildKeyboardButton("🔰 ".$tumanlar[$i+1])];
+            if($i+2<=count($tumanlar)){
+                $options[]=[
+                    $telegram->buildKeyboardButton("🔰 ".$tumanlar[$i]),
+                    $telegram->buildKeyboardButton("🔰 ".$tumanlar[$i+1])];
+            }
+
         }
         if(count($tumanlar)%2==1){
             $options[]=[$telegram->buildKeyboardButton("🔰 ".$tumanlar[count($tumanlar)-1])];
