@@ -68,7 +68,7 @@ function setDist($chat_id,$text){
         $id=(int) $result['id'];
     }
 
-    $sql="update users set ditrict_id=$id where chat_id=$chat_id";
+    $sql="update users set district_id=$id where chat_id=$chat_id";
     mysqli_query($conn,$sql);
 
 }
