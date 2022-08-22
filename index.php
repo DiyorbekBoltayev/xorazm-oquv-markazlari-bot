@@ -109,22 +109,33 @@ $text = $telegram->Text();
 
     function showDistricts(){
         global $telegram,$chat_id;
-        setPage($chat_id,'main');
+        setPage($chat_id,'districts');
         $text=getTexts('tuman_tanlang',$chat_id);
         $text.=" 👇";
         $tumanlar=getDistricts($chat_id);
+        $icon="🔰 ";
+        sendTextWithKeyboard($tumanlar,$text,$icon);
+    }
+
+    function sendTextWithKeyboard($buttons,$text,$icon){
+        global $telegram,$chat_id;
         $options=[];
-        for($i=0;$i<count($tumanlar);$i+=2){
-            if($i+2<=count($tumanlar)){
+        for($i=0;$i<count($buttons);$i+=2){
+            if($i+2<=count($buttons)){
                 $options[]=[
-                    $telegram->buildKeyboardButton("🔰 ".$tumanlar[$i]),
-                    $telegram->buildKeyboardButton("🔰 ".$tumanlar[$i+1])];
+                    $telegram->buildKeyboardButton($icon.$buttons[$i]),
+                    $telegram->buildKeyboardButton($icon.$buttons[$i+1])];
             }
 
         }
-        if(count($tumanlar)%2==1){
-            $options[]=[$telegram->buildKeyboardButton("🔰 ".$tumanlar[count($tumanlar)-1])];
+        if(count($buttons)%2==1){
+            $options[]=[$telegram->buildKeyboardButton($icon.$buttons[count($buttons)-1])];
         }
+        $options[]=[
+            $telegram->buildKeyboardButton("⬅️ ".getTexts('orqaga',$chat_id)),
+            $telegram->buildKeyboardButton("⏮ ".getTexts('menu',$chat_id)),
+
+            ];
         $keyboard=$telegram->buildKeyBoard($options,false,true);
         $content=[
             'chat_id'=>$chat_id,
@@ -133,7 +144,6 @@ $text = $telegram->Text();
         ];
         $telegram->sendMessage($content);
     }
-
     function chooseButtons()
     {
         global $chat_id, $telegram;
