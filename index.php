@@ -65,8 +65,7 @@ if ($text == "/start") {
             }
             break;
         case 'districts':
-            $e_message = "";
-            try {
+
                 switch ($text) {
                     case "⬅️ " . getTexts('orqaga', $chat_id):
                     case "⏮ " . getTexts('menu', $chat_id):
@@ -81,15 +80,7 @@ if ($text == "/start") {
                             chooseButtons();
                         }
                 }
-            } catch (\Exception $e) {
-                $e_message .= $e->getMessage();
-                $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $e_message]);
 
-            } catch (Throwable $e) {
-                $e_message .= $e->getMessage();
-                $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $e_message]);
-
-            }
                 break;
             case
                 'subjects':
@@ -101,6 +92,7 @@ if ($text == "/start") {
                         showMainPage();
                         break;
                     default:
+                        sendMessage(substr($text, 7));
                         if (in_array(substr($text, 5), getSubjects($chat_id))) {
                             setDist($chat_id, substr($text, 5));
                             //todo somthing
@@ -222,4 +214,18 @@ if ($text == "/start") {
         $telegram->sendMessage($content);
     }
 
+//$e_message = "";
+//try {
+
+
+
+//} catch (\Exception $e) {
+//    $e_message .= $e->getMessage();
+//    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $e_message]);
+//
+//} catch (Throwable $e) {
+//    $e_message .= $e->getMessage();
+//    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $e_message]);
+//
+//}
 
