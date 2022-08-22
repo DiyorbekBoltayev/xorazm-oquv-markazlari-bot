@@ -66,6 +66,38 @@ $text = $telegram->Text();
                            break;
                    }
                 break;
+            case 'districts':
+                switch ($text){
+                    case "⬅️ ".getTexts('orqaga',$chat_id):
+                    case "⏮ ".getTexts('menu',$chat_id):
+                        showMainPage();
+                        break;
+                    default:
+                        if(in_array(substr($text,5),getDistricts($chat_id))) {
+                        setDist($chat_id,substr($text,5));
+                        showSubjects();
+                        }else{
+                            chooseButtons();
+                        }
+                }
+                break;
+            case 'subjects':
+                switch ($text){
+                    case "⬅️ ".getTexts('orqaga',$chat_id):
+                        showDistricts();
+                        break;
+                    case "⏮ ".getTexts('menu',$chat_id):
+                        showMainPage();
+                        break;
+                    default:
+                        if(in_array(substr($text,5),getSubjects($chat_id))) {
+                            setDist($chat_id,substr($text,5));
+                            //todo somthing
+                        }else{
+                            chooseButtons();
+                        }
+                }
+                break;
         }
     }
 
@@ -108,13 +140,23 @@ $text = $telegram->Text();
     }
 
     function showDistricts(){
-        global $telegram,$chat_id;
+        global $chat_id;
         setPage($chat_id,'districts');
         $text=getTexts('tuman_tanlang',$chat_id);
         $text.=" 👇";
         $tumanlar=getDistricts($chat_id);
         $icon="🔰 ";
         sendTextWithKeyboard($tumanlar,$text,$icon);
+    }
+
+    function showSubjects(){
+        global $chat_id;
+        setPage($chat_id,'subjects');
+        $text=getTexts('fan_tanlang',$chat_id);
+        $text.=" 👇";
+        $fanlar=getSubjects($chat_id);
+        $icon="📚 ";
+        sendTextWithKeyboard($fanlar,$text,$icon);
     }
 
     function sendTextWithKeyboard($buttons,$text,$icon){
@@ -144,6 +186,7 @@ $text = $telegram->Text();
         ];
         $telegram->sendMessage($content);
     }
+
     function chooseButtons()
     {
         global $chat_id, $telegram;

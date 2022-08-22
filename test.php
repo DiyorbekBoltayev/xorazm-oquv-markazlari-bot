@@ -1,21 +1,15 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+
 <?php
 require_once 'connect.php';
-$sql="select * from texts ";
-$result=mysqli_query($conn,$sql);
-while ($r=$r=$result->fetch_assoc()){
-    echo $r['ru']."<br>";
-}
-?>
-</body>
-</html>
+    $text="Urganch tumani";
+    $sql="select id from districts where uz='$text' or ru='$text'";
+    $result=mysqli_query($conn,$sql);
+    if($result->num_rows==0){
+        var_dump(0);
+    }else{
+
+        $result=$result->fetch_assoc();
+        var_dump($result['id']);
+    }
+
 

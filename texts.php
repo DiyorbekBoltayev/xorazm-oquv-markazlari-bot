@@ -1,5 +1,4 @@
 <?php
-require_once "connect.php";
 require_once "user.php";
 
 function getTexts($keyword,$chat_id){
