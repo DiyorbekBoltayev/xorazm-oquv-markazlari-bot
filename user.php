@@ -84,3 +84,18 @@ function getSubjects($chat_id):array{
     }
     return $d;
 }
+
+function setSubj($chat_id,$text){
+    global $conn;
+    $id=0;
+    $sql="select id from subjects where uz='$text' or ru='$text'";
+    $result=mysqli_query($conn,$sql);
+    if($result->num_rows!=0) {
+        $result = $result->fetch_assoc();
+        $id=(int) $result['id'];
+    }
+
+    $sql="update users set subject_id=$id where chat_id=$chat_id";
+    mysqli_query($conn,$sql);
+
+}

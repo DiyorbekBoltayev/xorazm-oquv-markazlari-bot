@@ -92,8 +92,7 @@ if ($text == "/start") {
                         break;
                     default:
                         if (in_array(substr($text, 5), getSubjects($chat_id))) {
-//                            setDist($chat_id, substr($text, 5));
-                            //todo somthing
+                            setSubj($chat_id, substr($text, 5));
                         } else {
                             chooseButtons();
                         }
