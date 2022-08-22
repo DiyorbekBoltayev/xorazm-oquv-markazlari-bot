@@ -73,6 +73,7 @@ $text = $telegram->Text();
                         showMainPage();
                         break;
                     default:
+                        sendMessage(substr($text,5));
                         if(in_array(substr($text,5),getDistricts($chat_id))) {
                         setDist($chat_id,substr($text,5));
                         showSubjects();
@@ -193,6 +194,15 @@ $text = $telegram->Text();
         $content = [
             'chat_id' => $chat_id,
             'text' => " Iltimos quyidagi tugmalardan birini tanlang 👇 \nПожалуйста, выберите одну из кнопок ниже 👇"
+        ];
+        $telegram->sendMessage($content);
+    }
+
+    function sendMessage($text){
+        global $chat_id, $telegram;
+        $content = [
+            'chat_id' => $chat_id,
+            'text' => $text
         ];
         $telegram->sendMessage($content);
     }
