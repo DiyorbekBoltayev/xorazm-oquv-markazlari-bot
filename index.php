@@ -72,7 +72,6 @@ if ($text == "/start") {
                         showMainPage();
                         break;
                     default:
-                        sendMessage(substr($text, 5));
                         if (in_array(substr($text, 5), getDistricts($chat_id))) {
                             setDist($chat_id, substr($text, 5));
                             showSubjects();
@@ -92,9 +91,8 @@ if ($text == "/start") {
                         showMainPage();
                         break;
                     default:
-                        sendMessage(substr($text, 7));
                         if (in_array(substr($text, 5), getSubjects($chat_id))) {
-                            setDist($chat_id, substr($text, 5));
+//                            setDist($chat_id, substr($text, 5));
                             //todo somthing
                         } else {
                             chooseButtons();
