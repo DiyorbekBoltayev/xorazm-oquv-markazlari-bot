@@ -73,8 +73,8 @@ $text = $telegram->Text();
                         showMainPage();
                         break;
                     default:
-                        if(in_array(substr($text,7),getDistricts($chat_id))) {
-                        setDist($chat_id,substr($text,7));
+                        if(in_array(substr($text,5),getDistricts($chat_id))) {
+                        setDist($chat_id,substr($text,5));
                         showSubjects();
                         }else{
                             chooseButtons();
@@ -90,8 +90,8 @@ $text = $telegram->Text();
                         showMainPage();
                         break;
                     default:
-                        if(in_array(substr($text,7),getSubjects($chat_id))) {
-                            setDist($chat_id,substr($text,7));
+                        if(in_array(substr($text,5),getSubjects($chat_id))) {
+                            setDist($chat_id,substr($text,5));
                             //todo somthing
                         }else{
                             chooseButtons();
