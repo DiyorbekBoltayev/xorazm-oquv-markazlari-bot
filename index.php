@@ -26,40 +26,66 @@ if ($firstname != null) {
 if ($lastname != null) {
     $lastname = no_apostrof($lastname);
 }
+
+
 $e_message = "";
 try {
 
-$user=new User($chat_id,$firstname,$lastname,$username);
-if ($text == "/start") {
-    chooseLanguage();
-} else {
-    switch ($user->getPage()) {
-        case 'start':
-            if ($text == "🇺🇿 O'zbek tili") {
-                $user->setLang('uz');
-                showMainPage();
-            } elseif ($text == "🇷🇺 Русский язык") {
-                $user->setLang('ru');
-                showMainPage();
-            } else {
-                chooseButtons();
-            }
-            break;
-        case 'main':
-            switch ($text) {
-                case "🏫 " . $user->getTexts('btn_markaz_tanlash'):
-                    showDistricts();
-                    break;
-                case "📜 " . $user->getTexts('btn_markazlar_royhati'):
-                    //TODO xd
-                    break;
-                case "🇺🇿♻️🇷🇺" . $user->getTexts('btn_til'):
-                    $user->changeLang();
+    $user = new User($chat_id, $firstname, $lastname, $username);
+
+    $callback_query = $telegram->Callback_Query();
+    if ($callback_query !== null && $callback_query != '') {
+
+        $callback_data = $telegram->Callback_Data();
+
+        // $callback_data = str_replace('\'', '\\\'', $callback_data);
+
+        $chatID = $telegram->Callback_ChatID();
+
+
+        $mtext = $user->getInfo($callback_data)." yana bir qancha malumot";
+
+        $content = array('chat_id' => $chatID, 'text' => $mtext);
+        $telegram->sendMessage($content);
+
+
+        //answer nothing with answerCallbackQuery, because it is required
+
+        $content = ['callback_query_id' => $telegram->Callback_ID(), 'text' => '', 'show_alert' => false];
+
+        $telegram->answerCallbackQuery($content);
+
+    }
+    if ($text == "/start") {
+        chooseLanguage();
+    } else {
+        switch ($user->getPage()) {
+            case 'start':
+                if ($text == "🇺🇿 O'zbek tili") {
+                    $user->setLang('uz');
                     showMainPage();
-                    break;
-            }
-            break;
-        case 'districts':
+                } elseif ($text == "🇷🇺 Русский язык") {
+                    $user->setLang('ru');
+                    showMainPage();
+                } else {
+                    chooseButtons();
+                }
+                break;
+            case 'main':
+                switch ($text) {
+                    case "🏫 " . $user->getTexts('btn_markaz_tanlash'):
+                        showDistricts();
+                        break;
+                    case "📜 " . $user->getTexts('btn_markazlar_royhati'):
+                        //TODO xd
+                        break;
+                    case "🇺🇿♻️🇷🇺" . $user->getTexts('btn_til'):
+                        $user->changeLang();
+                        showMainPage();
+                        break;
+                }
+                break;
+            case 'districts':
 
                 switch ($text) {
                     case "⬅️ " . $user->getTexts('orqaga'):
@@ -68,7 +94,7 @@ if ($text == "/start") {
                         break;
                     default:
                         if (in_array(substr($text, 5), $user->getDistricts())) {
-                            $user->setDist( substr($text, 5));
+                            $user->setDist(substr($text, 5));
                             showSubjects();
                         } else {
                             chooseButtons();
@@ -77,7 +103,7 @@ if ($text == "/start") {
 
                 break;
             case
-                'subjects':
+            'subjects':
                 switch ($text) {
                     case "⬅️ " . $user->getTexts('orqaga'):
                         showDistricts();
@@ -87,7 +113,7 @@ if ($text == "/start") {
                         break;
                     default:
                         if (in_array(substr($text, 5), $user->getSubjects())) {
-                            $user->setSubj( substr($text, 5));
+                            $user->setSubj(substr($text, 5));
                             showTrainingCenters();
 
                         } else {
@@ -100,137 +126,145 @@ if ($text == "/start") {
 
 } catch (\Exception $e) {
     $e_message .= $e->getMessage();
-    $e_message.=$e->getLine();
-    $e_message.=$e->getFile();
+    $e_message .= $e->getLine();
+    $e_message .= $e->getFile();
     $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $e_message]);
 
-}
-catch (Throwable $e) {
+} catch (Throwable $e) {
     $e_message .= $e->getMessage();
-    $e_message.=$e->getLine();
-    $e_message.=$e->getFile();
+    $e_message .= $e->getLine();
+    $e_message .= $e->getFile();
     $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $e_message]);
 
 }
 
-    function chooseLanguage()
-    {
-        global $telegram, $chat_id,$user;
-        $user->setPage('start');
-        $options = [
-            [$telegram->buildKeyboardButton("🇺🇿 O'zbek tili"), $telegram->buildKeyboardButton("🇷🇺 Русский язык")]
+function chooseLanguage()
+{
+    global $telegram, $chat_id, $user;
+    $user->setPage('start');
+    $options = [
+        [$telegram->buildKeyboardButton("🇺🇿 O'zbek tili"), $telegram->buildKeyboardButton("🇷🇺 Русский язык")]
 
-        ];
-        $keyboard = $telegram->buildKeyBoard($options, true, true);
-        $content = [
-            'chat_id' => $chat_id,
-            'reply_markup' => $keyboard,
-            'text' => "Iltimos tilni tanlang: \nВыберите язык:"
-        ];
-        $telegram->sendMessage($content);
-    }
+    ];
+    $keyboard = $telegram->buildKeyBoard($options, true, true);
+    $content = [
+        'chat_id' => $chat_id,
+        'reply_markup' => $keyboard,
+        'text' => "Iltimos tilni tanlang: \nВыберите язык:"
+    ];
+    $telegram->sendMessage($content);
+}
 
-    function showMainPage()
-    {
-        global $telegram,$user,$chat_id;
-        $user->setPage( 'main');
-        $text = $user->getTexts('yonalish_tanlang');
-        $text .= " 👇";
-        $options = [
-            [
-                $telegram->buildKeyboardButton("🏫 " . $user->getTexts('btn_markaz_tanlash')),
-                $telegram->buildKeyboardButton("📜 " . $user->getTexts('btn_markazlar_royhati'))
-            ],
-            [$telegram->buildKeyboardButton("🇺🇿♻️🇷🇺" . $user->getTexts('btn_til'))]
-        ];
-        $keyboard = $telegram->buildKeyBoard($options, false, true);
-        $content = [
-            'chat_id' => $chat_id,
-            'reply_markup' => $keyboard,
-            'text' => $text
-        ];
-        $telegram->sendMessage($content);
-    }
+function showMainPage()
+{
+    global $telegram, $user, $chat_id;
+    $user->setPage('main');
+    $text = $user->getTexts('yonalish_tanlang');
+    $text .= " 👇";
+    $options = [
+        [
+            $telegram->buildKeyboardButton("🏫 " . $user->getTexts('btn_markaz_tanlash')),
+            $telegram->buildKeyboardButton("📜 " . $user->getTexts('btn_markazlar_royhati'))
+        ],
+        [$telegram->buildKeyboardButton("🇺🇿♻️🇷🇺" . $user->getTexts('btn_til'))]
+    ];
+    $keyboard = $telegram->buildKeyBoard($options, false, true);
+    $content = [
+        'chat_id' => $chat_id,
+        'reply_markup' => $keyboard,
+        'text' => $text
+    ];
+    $telegram->sendMessage($content);
+}
 
-    function showDistricts()
-    {
-        global $chat_id,$user;
-        $user->setPage( 'districts');
-        $text = $user->getTexts('tuman_tanlang');
-        $text .= " 👇";
-        $tumanlar = $user->getDistricts();
-        $icon = "🔰 ";
-        sendTextWithKeyboard($tumanlar, $text, $icon);
-    }
+function showDistricts()
+{
+    global $chat_id, $user;
+    $user->setPage('districts');
+    $text = $user->getTexts('tuman_tanlang');
+    $text .= " 👇";
+    $tumanlar = $user->getDistricts();
+    $icon = "🔰 ";
+    sendTextWithKeyboard($tumanlar, $text, $icon);
+}
 
-    function showSubjects()
-    {
-        global $chat_id,$user;
-        $user->setPage( 'subjects');
-        $text = $user->getTexts('fan_tanlang');
-        $text .= " 👇";
-        $fanlar = $user->getSubjects();
-        $icon = "📚 ";
-        sendTextWithKeyboard($fanlar, $text, $icon);
-    }
+function showSubjects()
+{
+    global $chat_id, $user;
+    $user->setPage('subjects');
+    $text = $user->getTexts('fan_tanlang');
+    $text .= " 👇";
+    $fanlar = $user->getSubjects();
+    $icon = "📚 ";
+    sendTextWithKeyboard($fanlar, $text, $icon);
+}
 
-    function sendTextWithKeyboard($buttons, $text, $icon)
-    {
-        global $telegram, $chat_id,$user;
-        $options = [];
-        for ($i = 0; $i < count($buttons); $i += 2) {
-            if ($i + 2 <= count($buttons)) {
-                $options[] = [
-                    $telegram->buildKeyboardButton($icon . $buttons[$i]),
-                    $telegram->buildKeyboardButton($icon . $buttons[$i + 1])];
-            }
-
+function sendTextWithKeyboard($buttons, $text, $icon)
+{
+    global $telegram, $chat_id, $user;
+    $options = [];
+    for ($i = 0; $i < count($buttons); $i += 2) {
+        if ($i + 2 <= count($buttons)) {
+            $options[] = [
+                $telegram->buildKeyboardButton($icon . $buttons[$i]),
+                $telegram->buildKeyboardButton($icon . $buttons[$i + 1])];
         }
-        if (count($buttons) % 2 == 1) {
-            $options[] = [$telegram->buildKeyboardButton($icon . $buttons[count($buttons) - 1])];
-        }
-        $options[] = [
-            $telegram->buildKeyboardButton("⬅️ " . $user->getTexts('orqaga')),
-            $telegram->buildKeyboardButton("⏮ " . $user->getTexts('menu')),
 
-        ];
-        $keyboard = $telegram->buildKeyBoard($options, false, true);
-        $content = [
-            'chat_id' => $chat_id,
-            'reply_markup' => $keyboard,
-            'text' => $text
-        ];
-        $telegram->sendMessage($content);
     }
+    if (count($buttons) % 2 == 1) {
+        $options[] = [$telegram->buildKeyboardButton($icon . $buttons[count($buttons) - 1])];
+    }
+    $options[] = [
+        $telegram->buildKeyboardButton("⬅️ " . $user->getTexts('orqaga')),
+        $telegram->buildKeyboardButton("⏮ " . $user->getTexts('menu')),
 
-    function showTrainingCenters(){
-        global $telegram,$user;
-        $centers=[];
-        $centers=$user->getTrainingCenters();
-        if(count($centers)>0){
-            sendMessage('ishladi '.$centers[0]['name']);
-        }
-    }
+    ];
+    $keyboard = $telegram->buildKeyBoard($options, false, true);
+    $content = [
+        'chat_id' => $chat_id,
+        'reply_markup' => $keyboard,
+        'text' => $text
+    ];
+    $telegram->sendMessage($content);
+}
 
-    function chooseButtons()
-    {
-        global $chat_id, $telegram;
-        $content = [
-            'chat_id' => $chat_id,
-            'text' => " Iltimos quyidagi tugmalardan birini tanlang 👇 \nПожалуйста, выберите одну из кнопок ниже 👇"
-        ];
-        $telegram->sendMessage($content);
+function showTrainingCenters()
+{
+    global $telegram, $user,$chat_id;
+    $centers = [];
+    $centers = $user->getTrainingCenters();
+    $options=[];
+    foreach ($centers as $center) {
+        $options[]=[$telegram->buildInlineKeyboardButton("🏢 ".$center['name'],'',$center['id'])];
     }
+    $keyb=$telegram->buildInlineKeyBoard($options);
+    $content=[
+        'chat_id'=>$chat_id,
+        'reply_markup'=>$keyb,
+        'text'=>$user->getTexts('markaz_tanlang')
+    ];
+    $telegram->sendMessage($content);
+}
 
-    function sendMessage($text)
-    {
-        global $chat_id, $telegram;
-        $content = [
-            'chat_id' => $chat_id,
-            'text' => $text
-        ];
-        $telegram->sendMessage($content);
-    }
+function chooseButtons()
+{
+    global $chat_id, $telegram;
+    $content = [
+        'chat_id' => $chat_id,
+        'text' => " Iltimos quyidagi tugmalardan birini tanlang 👇 \nПожалуйста, выберите одну из кнопок ниже 👇"
+    ];
+    $telegram->sendMessage($content);
+}
+
+function sendMessage($text)
+{
+    global $chat_id, $telegram;
+    $content = [
+        'chat_id' => $chat_id,
+        'text' => $text
+    ];
+    $telegram->sendMessage($content);
+}
 
 
 

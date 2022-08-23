@@ -151,4 +151,11 @@ class User
         return $centers;
 
     }
+
+    function getInfo($id):string{
+        global $conn;
+        $sql="select * from centers where id=".$id." limit 1";
+        $result=mysqli_query($conn,$sql)->fetch_assoc();
+        return $result['info'];
+    }
 }
