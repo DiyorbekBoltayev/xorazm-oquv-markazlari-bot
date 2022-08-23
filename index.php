@@ -26,6 +26,9 @@ if ($firstname != null) {
 if ($lastname != null) {
     $lastname = no_apostrof($lastname);
 }
+$e_message = "";
+try {
+
 $user=new User($chat_id,$firstname,$lastname,$username);
 if ($text == "/start") {
     chooseLanguage();
@@ -92,6 +95,16 @@ if ($text == "/start") {
                 break;
         }
     }
+
+} catch (\Exception $e) {
+    $e_message .= $e->getMessage();
+    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $e_message]);
+
+} catch (Throwable $e) {
+    $e_message .= $e->getMessage();
+    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $e_message]);
+
+}
 
     function chooseLanguage()
     {
@@ -203,18 +216,8 @@ if ($text == "/start") {
         $telegram->sendMessage($content);
     }
 
-//$e_message = "";
-//try {
 
 
 
-//} catch (\Exception $e) {
-//    $e_message .= $e->getMessage();
-//    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $e_message]);
-//
-//} catch (Throwable $e) {
-//    $e_message .= $e->getMessage();
-//    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $e_message]);
-//
-//}
+
 
