@@ -98,10 +98,14 @@ if ($text == "/start") {
 
 } catch (\Exception $e) {
     $e_message .= $e->getMessage();
+    $e_message.=$e->getLine();
+    $e_message.=$e->getFile();
     $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $e_message]);
 
 } catch (Throwable $e) {
     $e_message .= $e->getMessage();
+    $e_message.=$e->getLine();
+    $e_message.=$e->getFile();
     $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $e_message]);
 
 }
