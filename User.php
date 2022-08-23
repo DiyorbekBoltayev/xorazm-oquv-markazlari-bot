@@ -133,7 +133,7 @@ class User
         $result=mysqli_query($conn,$sql)->fetch_assoc();
         $district_id=$result['district_id'];
         $subject_id=$result['subject_id'];
-        $sql="select keyword from subjects where id=".$subject_id."limit 1";
+        $sql="select keyword from subjects where id=".$subject_id." limit 1";
         $result=mysqli_query($conn,$sql)->fetch_assoc();
         $keyword=$result['keyword'];
 
