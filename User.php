@@ -117,6 +117,7 @@ class User
         mysqli_query($conn,$sql);
 
     }
+
     function getTexts($keyword){
         global $conn;
         $lang=$this->getLang();
@@ -124,5 +125,30 @@ class User
         $result=mysqli_query($conn,$sql);
         $result=$result->fetch_assoc();
         return $result[$lang];
+    }
+
+    function getTrainingCenters():array{
+        global  $conn;
+        $sql="select * from users where chat_id=".$this->chat_id ." limit 1";
+        $result=mysqli_query($conn,$sql)->fetch_assoc();
+        $district_id=$result['district_id'];
+        $subject_id=$result['subject_id'];
+        $sql="select keyword from subjects where id=".$subject_id."limit 1";
+        $result=mysqli_query($conn,$sql)->fetch_assoc();
+        $keyword=$result['keyword'];
+
+        $sql="select * from centers";
+        $result=mysqli_query($conn,$sql);
+        $centers=[];
+        while ($row=$result->fetch_assoc()){
+            if($row['district_id']==$district_id){
+            $subjects=explode(',',$row['subjects']);
+            if(in_array($keyword,$subjects)){
+                $centers[]=$row;
+            }
+            }
+        }
+        return $centers;
+
     }
 }

@@ -88,6 +88,8 @@ if ($text == "/start") {
                     default:
                         if (in_array(substr($text, 5), $user->getSubjects())) {
                             $user->setSubj( substr($text, 5));
+                            showTrainingCenters();
+
                         } else {
                             chooseButtons();
                         }
@@ -102,7 +104,8 @@ if ($text == "/start") {
     $e_message.=$e->getFile();
     $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $e_message]);
 
-} catch (Throwable $e) {
+}
+catch (Throwable $e) {
     $e_message .= $e->getMessage();
     $e_message.=$e->getLine();
     $e_message.=$e->getFile();
@@ -198,6 +201,15 @@ if ($text == "/start") {
             'text' => $text
         ];
         $telegram->sendMessage($content);
+    }
+
+    function showTrainingCenters(){
+        global $telegram,$user;
+        $centers=[];
+        $centers=$user->getTrainingCenters();
+        if(count($centers)>0){
+            sendMessage('ishladi '.$centers[0]['name']);
+        }
     }
 
     function chooseButtons()
