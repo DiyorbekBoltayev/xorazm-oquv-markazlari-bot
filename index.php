@@ -55,7 +55,9 @@ try {
 
         $telegram->answerCallbackQuery($content);
 
-    }
+    } else{
+
+
     if ($text == "/start") {
         chooseLanguage();
     } else {
@@ -122,6 +124,7 @@ try {
                 }
                 break;
         }
+    }
     }
 
 } catch (\Exception $e) {
