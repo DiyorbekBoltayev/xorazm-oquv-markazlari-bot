@@ -5,6 +5,7 @@ class User
     private $chat_id,$firstname,$lastname,$username;
     public function __construct($chat_id,$firstname,$lastname,$username)
     {
+        global $conn;
         $this->chat_id=$chat_id;
         $this->firstname=$firstname;
         $this->lastname=$lastname;
