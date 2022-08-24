@@ -43,7 +43,7 @@ try {
         $chatID = $telegram->Callback_ChatID();
 
 
-        $mtext = $user->getInfo($callback_data)." yana bir qancha malumot";
+        $mtext = $user->getInfo($callback_data);
 
         $content = array('chat_id' => $chatID, 'text' => $mtext);
         $telegram->sendMessage($content);
@@ -241,10 +241,15 @@ function showTrainingCenters()
         $options[]=[$telegram->buildInlineKeyboardButton("🏢 ".$center['name'],'',$center['id'])];
     }
     $keyb=$telegram->buildInlineKeyBoard($options);
+    if(count($options)==0){
+        $t=$user->getTexts('no_markaz');
+    }else{
+        $t=$user->getTexts('markaz_tanlang')." 👇";
+    }
     $content=[
         'chat_id'=>$chat_id,
         'reply_markup'=>$keyb,
-        'text'=>$user->getTexts('markaz_tanlang')
+        'text'=>$t
     ];
     $telegram->sendMessage($content);
 }

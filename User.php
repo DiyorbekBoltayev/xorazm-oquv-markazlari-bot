@@ -156,6 +156,30 @@ class User
         global $conn;
         $sql="select * from centers where id=".$id." limit 1";
         $result=mysqli_query($conn,$sql)->fetch_assoc();
-        return $result['info'];
+        $info= $result['info'];
+        $subjects= $result['subjects'];
+        $xabar="📜 Markaz nomi:\n";
+        $xabar.="🏢 ".$result['name']."\n \n";
+        $info=explode(';;',$info);
+        $xabar.="💭 Qisqacha izoh:\n";
+        $xabar.=$info[0]."\n \n";
+        $xabar.="📚 Fanlar ro`yhati:\n";
+        $subjects=explode(',',$subjects);
+        foreach ($subjects as $subject) {
+            $xabar.="🔷 ".$subject." \n";
+        }
+        $xabar.="\n";
+        $xabar.="⛳️ Manzil: \n";
+        $xabar.=$info[1]." \n \n";
+        $xabar.="☎️ Telefon raqami: \n";
+        $xabar.=$info[2]." \n \n";
+        $xabar.="👨‍💻 Telegram: \n";
+        $xabar.=$info[3]." \n \n \n ";
+        $xabar.="@XorazmOquvMarkazlariBot";
+        return $xabar;
+
+
+
+
     }
 }
