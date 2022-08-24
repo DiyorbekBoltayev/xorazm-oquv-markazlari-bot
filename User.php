@@ -154,26 +154,27 @@ class User
 
     function getInfo($id):string{
         global $conn;
+        $lang=$this->getLang();
         $sql="select * from centers where id=".$id." limit 1";
         $result=mysqli_query($conn,$sql)->fetch_assoc();
-        $info= $result['info'];
+        $info= $result[$lang];
         $subjects= $result['subjects'];
-        $xabar="📜 Markaz nomi:\n";
+        $xabar="📜 ".$this->getTexts('x_m_nomi')."\n";
         $xabar.="🏢 ".$result['name']."\n \n";
         $info=explode(';;',$info);
-        $xabar.="💭 Qisqacha izoh:\n";
+        $xabar.="💭 ".$this->getTexts('x_q_izoh')."\n";
         $xabar.=$info[0]."\n \n";
-        $xabar.="📚 Fanlar ro`yhati:\n";
+        $xabar.="📚 ".$this->getTexts('x_fanlar')."\n";
         $subjects=explode(',',$subjects);
         foreach ($subjects as $subject) {
             $xabar.="🔷 ".$subject." \n";
         }
         $xabar.="\n";
-        $xabar.="⛳️ Manzil: \n";
+        $xabar.="⛳️ ".$this->getTexts('x_manzil')." \n";
         $xabar.=$info[1]." \n \n";
-        $xabar.="☎️ Telefon raqami: \n";
+        $xabar.="☎️ ".$this->getTexts('x_telefon')." \n";
         $xabar.=$info[2]." \n \n";
-        $xabar.="👨‍💻 Telegram: \n";
+        $xabar.="👨‍💻 ".$this->getTexts('x_telegram')."  \n";
         $xabar.=$info[3]." \n \n \n ";
         $xabar.="@XorazmOquvMarkazlariBot";
         return $xabar;
