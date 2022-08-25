@@ -79,7 +79,7 @@ try {
                         showDistricts();
                         break;
                     case "📜 " . $user->getTexts('btn_markazlar_royhati'):
-                        //TODO xd
+                        showAllCenters();
                         break;
                     case "🇺🇿♻️🇷🇺" . $user->getTexts('btn_til'):
                         $user->changeLang();
@@ -236,6 +236,28 @@ function showTrainingCenters()
     global $telegram, $user,$chat_id;
     $centers = [];
     $centers = $user->getTrainingCenters();
+    $options=[];
+    foreach ($centers as $center) {
+        $options[]=[$telegram->buildInlineKeyboardButton("🏢 ".$center['name'],'',$center['id'])];
+    }
+    $keyb=$telegram->buildInlineKeyBoard($options);
+    if(count($options)==0){
+        $t=$user->getTexts('no_markaz');
+    }else{
+        $t=$user->getTexts('markaz_tanlang')." 👇";
+    }
+    $content=[
+        'chat_id'=>$chat_id,
+        'reply_markup'=>$keyb,
+        'text'=>$t
+    ];
+    $telegram->sendMessage($content);
+}
+
+function showAllCenters(){
+    global $telegram, $user,$chat_id;
+    $centers = [];
+    $centers = $user->getAllTrainingCenters();
     $options=[];
     foreach ($centers as $center) {
         $options[]=[$telegram->buildInlineKeyboardButton("🏢 ".$center['name'],'',$center['id'])];
