@@ -184,6 +184,7 @@ class User
         $sql = "select * from centers where id=" . $id . " limit 1";
         $result = mysqli_query($conn, $sql)->fetch_assoc();
         $info = $result[$lang];
+        $districts=$result['district_id'];
         $subjects = $result['subjects'];
         $xabar = "📜 " . $this->getTexts('x_m_nomi') . "\n";
         $xabar .= "🏢 " . $result['name'] . "\n \n";
@@ -196,8 +197,17 @@ class User
             $xabar .= "🔷 " . $subject . " \n";
         }
         $xabar .= "\n";
-        $xabar .= "⛳️ " . $this->getTexts('x_manzil') . " \n";
+        $xabar .= "📍 " . $this->getTexts('x_manzil') . " \n";
         $xabar .= $info[1] . " \n \n";
+        $xabar .= "🗺 " . $this->getTexts('x_filial') . "\n";
+        $districts = explode(',',$districts);
+        foreach ($districts as $district) {
+            $sql="select * from districts where id='$district' limit 1";
+            $d=mysqli_query($conn,$sql)->fetch_assoc();
+
+            $xabar .= "🌆 " . $d[$lang] . " \n";
+        }
+        $xabar .= "\n";
         $xabar .= "☎️ " . $this->getTexts('x_telefon') . " \n";
         $xabar .= $info[2] . " \n \n";
         $xabar .= "👨‍💻 " . $this->getTexts('x_telegram') . "  \n";
