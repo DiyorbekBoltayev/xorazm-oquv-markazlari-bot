@@ -194,7 +194,9 @@ class User
         $xabar .= "📚 " . $this->getTexts('x_fanlar') . "\n";
         $subjects = explode(',', $subjects);
         foreach ($subjects as $subject) {
-            $xabar .= "🔷 " . $subject . " \n";
+            $sql="select * from districts where keyword=$subject limit 1";
+            $d=mysqli_query($conn,$sql)->fetch_assoc();
+            $xabar .= "🔷 " . $d[$lang] . " \n";
         }
         $xabar .= "\n";
         $xabar .= "📍 " . $this->getTexts('x_manzil') . " \n";
