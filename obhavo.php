@@ -69,9 +69,9 @@ function findWeather(){
 
 }
 function matnTayyor($data):string{
-    $javob="💭 Ob-havo ma'lumoti:\n";
-    $javob.="🌆 Shahar: ".$data['name']." \n";
-    $javob.="🌡 Harorat: ".($data['main']["temp"]-273)." \n";
-    $javob.="Shamol tezligi: ".$data['wind']["speed"]." m/s \n";
+    $javob="💭  Ob-havo ma'lumoti:\n\n";
+    $javob.="🌆  Shahar: ".$data['name']." \n\n";
+    $javob.="🌡  Harorat: ".($data['main']["temp"]-273)." \n\n";
+    $javob.="💨  Shamol tezligi: ".$data['wind']["speed"]." m/s \n\n";
     return $javob;
 }
