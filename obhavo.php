@@ -16,7 +16,7 @@ elseif ($text=='⌨️ Shahar nomini kiritish'){
 }
 elseif (file_get_contents('obhavo.txt')=='ask'){
     findWeather();
-}elseif ($message['location']['lalitude'] != ""){
+}elseif ($message['location']['latitude'] != ""){
     $request="https://api.openweathermap.org/data/2.5/weather?lat=".$message["location"]["latitude"]."&lon=".$message['location']["longitude"]."&appid=253468cdc02c66c0ccb7393c8d3ce4e7";
     $data=json_decode(file_get_contents($request),true);
     if($data['cod']==200){
