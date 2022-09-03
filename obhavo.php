@@ -7,6 +7,7 @@ $chat_id = $telegram->ChatID();
 $text = $telegram->Text();
 $message=$telegram->getData();
 $message=$message['message'];
+$telegram->sendMessage(['chat_id'=>$chat_id,'text'=>json_encode($message,JSON_PRETTY_PRINT)]);
 if($text=='/start'){
     showStart();
 }
